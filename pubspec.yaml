@@ -1,0 +1,45 @@
+name: invoice_billing
+description: "Invoice Billing App - Manage customers, invoices, and payments."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # State management
+  provider: ^6.1.2
+
+  # Database
+  sqflite: ^2.3.3+2
+  path: ^1.9.0
+
+  # PDF
+  pdf: ^3.11.1
+  printing: ^5.13.3
+
+  # Image
+  image_picker: ^1.1.2
+
+  # File operations
+  path_provider: ^2.1.4
+  file_picker: ^8.1.2
+  share_plus: ^10.0.0
+
+  # Formatting
+  intl: ^0.20.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
