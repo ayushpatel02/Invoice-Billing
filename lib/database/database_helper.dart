@@ -323,6 +323,27 @@ class DatabaseHelper {
     );
   }
 
+  Future<int> deleteInvoice(int invoiceId) async {
+    final db = await database;
+    return db.transaction((txn) async {
+      await txn.delete(
+        Tables.payments,
+        where: 'invoice_id = ?',
+        whereArgs: [invoiceId],
+      );
+      await txn.delete(
+        Tables.lineItems,
+        where: 'invoice_id = ?',
+        whereArgs: [invoiceId],
+      );
+      return txn.delete(
+        Tables.invoices,
+        where: 'id = ?',
+        whereArgs: [invoiceId],
+      );
+    });
+  }
+
   // ---------- Line Items ----------
 
   Future<List<LineItem>> getLineItemsByInvoice(int invoiceId) async {

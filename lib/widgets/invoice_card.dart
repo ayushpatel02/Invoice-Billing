@@ -3,12 +3,14 @@ import '../models/invoice.dart';
 import '../constants/app_theme.dart';
 import '../utils/currency_formatter.dart';
 import '../utils/date_formatter.dart';
+import 'confirm_dialog.dart';
 
 class InvoiceCard extends StatelessWidget {
   final Invoice invoice;
   final VoidCallback onTap;
   final VoidCallback? onEdit;
   final VoidCallback onDownload;
+  final VoidCallback? onDelete;
 
   const InvoiceCard({
     super.key,
@@ -16,11 +18,12 @@ class InvoiceCard extends StatelessWidget {
     required this.onTap,
     this.onEdit,
     required this.onDownload,
+    this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    final card = Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: InkWell(
         onTap: onTap,
@@ -104,6 +107,44 @@ class InvoiceCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+
+    if (onDelete == null) return card;
+
+    return Dismissible(
+      key: ValueKey('invoice_${invoice.id}'),
+      direction: DismissDirection.endToStart,
+      background: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 24),
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: Colors.red[700],
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.delete_outline, color: Colors.white, size: 30),
+            SizedBox(height: 4),
+            Text('Delete',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold)),
+          ],
+        ),
+      ),
+      confirmDismiss: (_) => showConfirmDialog(
+        context,
+        title: 'Delete Invoice',
+        message:
+            'Delete Invoice #${invoice.invoiceNo}? This invoice and all its payment records will be permanently removed.',
+        confirmText: 'Delete',
+        isDangerous: true,
+      ),
+      onDismissed: (_) => onDelete!(),
+      child: card,
     );
   }
 }

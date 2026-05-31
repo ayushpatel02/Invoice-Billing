@@ -96,18 +96,21 @@ class _InvoiceListScreenState extends State<InvoiceListScreen>
                 onTap: (inv) => _openDetail(inv),
                 onEdit: (inv) => _openForm(invoice: inv),
                 onDownload: _downloadPdf,
+                onDelete: _deleteInvoice,
               ),
               _InvoiceTab(
                 invoices: provider.partiallyPaidInvoices,
                 emptyMessage: 'No partially paid invoices',
                 onTap: (inv) => _openDetail(inv),
                 onDownload: _downloadPdf,
+                onDelete: _deleteInvoice,
               ),
               _InvoiceTab(
                 invoices: provider.fullyPaidInvoices,
                 emptyMessage: 'No fully paid invoices',
                 onTap: (inv) => _openDetail(inv),
                 onDownload: _downloadPdf,
+                onDelete: _deleteInvoice,
               ),
             ],
           );
@@ -147,6 +150,17 @@ class _InvoiceListScreenState extends State<InvoiceListScreen>
       if (mounted) provider.loadInvoices(widget.customerId);
     });
   }
+
+  Future<void> _deleteInvoice(Invoice invoice) async {
+    final provider = context.read<InvoiceProvider>();
+    final ok = await provider.deleteInvoice(invoice.id!);
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(ok
+          ? 'Invoice #${invoice.invoiceNo} deleted'
+          : 'Failed to delete invoice'),
+    ));
+  }
 }
 
 class _InvoiceTab extends StatelessWidget {
@@ -156,6 +170,7 @@ class _InvoiceTab extends StatelessWidget {
   final void Function(Invoice) onTap;
   final void Function(Invoice)? onEdit;
   final void Function(Invoice) onDownload;
+  final void Function(Invoice)? onDelete;
 
   const _InvoiceTab({
     required this.invoices,
@@ -164,6 +179,7 @@ class _InvoiceTab extends StatelessWidget {
     required this.onTap,
     this.onEdit,
     required this.onDownload,
+    this.onDelete,
   });
 
   @override
@@ -184,6 +200,7 @@ class _InvoiceTab extends StatelessWidget {
           onTap: () => onTap(inv),
           onEdit: showEdit && onEdit != null ? () => onEdit!(inv) : null,
           onDownload: () => onDownload(inv),
+          onDelete: onDelete != null ? () => onDelete!(inv) : null,
         );
       },
     );

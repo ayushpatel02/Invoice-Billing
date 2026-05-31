@@ -126,6 +126,15 @@ Each line item represents one product or service.
 - Once any payment has been made, the invoice is locked (no edit button).
 - To edit an unpaid invoice, tap the **pencil icon** on the invoice card.
 
+### Deleting an invoice
+
+- **Swipe the invoice card to the left** (works on Unpaid, Partially Paid, and Fully Paid tabs).
+- A red "Delete" area will appear.
+- A confirmation dialog will ask you to confirm before deleting.
+- Tap **Delete** to confirm, or **Cancel** to keep the invoice.
+
+> ⚠️ Deleting an invoice permanently removes it and all its payment records. This cannot be undone.
+
 ---
 
 ## 5. Recording Payments
@@ -237,7 +246,7 @@ All data is stored locally on your device. Use the export/import feature to back
 Yes. Invoice numbers are per customer. Each customer starts from #1 and counts up independently.
 
 **Q: Can I delete an invoice?**
-Invoices are deleted automatically when you delete the customer. There is no way to delete a single invoice currently — this prevents accidental data loss.
+Yes. Open the customer's invoice list, then swipe the invoice card to the left and confirm. This works on any tab (Unpaid, Partially Paid, Fully Paid). Deleting a customer also removes all of their invoices automatically.
 
 **Q: The PDF shows the wrong business name. How do I fix it?**
 Go to side menu → Business Profile → edit your name → Save. New PDFs will use the updated name.

@@ -73,4 +73,14 @@ class InvoiceProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> deleteInvoice(int invoiceId) async {
+    try {
+      await DatabaseHelper.instance.deleteInvoice(invoiceId);
+      if (_currentCustomerId != null) await loadInvoices(_currentCustomerId!);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
 }
