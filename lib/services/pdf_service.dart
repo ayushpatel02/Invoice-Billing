@@ -101,7 +101,7 @@ class PdfService {
                 pw.Text('INVOICE',
                     style: pw.TextStyle(
                         fontSize: 18, fontWeight: pw.FontWeight.bold,
-                        color: PdfColors.blue800)),
+                        color: PdfColors.red800)),
                 pw.Text('No: ${invoice.invoiceNo}',
                     style: const pw.TextStyle(fontSize: 10)),
                 pw.Text('Date: ${formatDisplayDate(invoice.date)}',
@@ -173,7 +173,7 @@ class PdfService {
       headerStyle: pw.TextStyle(
           fontWeight: pw.FontWeight.bold, fontSize: 9, color: PdfColors.white),
       headerDecoration:
-          const pw.BoxDecoration(color: PdfColors.blue800),
+          const pw.BoxDecoration(color: PdfColors.red800),
       cellStyle: const pw.TextStyle(fontSize: 9),
       cellAlignments: {
         0: pw.Alignment.center,

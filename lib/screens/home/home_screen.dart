@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import '../../providers/customer_provider.dart';
 import '../../widgets/customer_card.dart';
 import '../../widgets/empty_state.dart';
-import '../../widgets/confirm_dialog.dart';
 import '../../widgets/app_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -64,24 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     arguments: {'customer': customer},
                   ).then((_) => provider.loadCustomers()),
                   onDelete: () async {
-                    final confirmed = await showConfirmDialog(
-                      context,
-                      title: 'Delete Customer',
-                      message:
-                          'Delete ${customer.fullName}? All invoices and payments will be removed.',
-                      confirmText: 'Delete',
-                      isDangerous: true,
-                    );
-                    if (confirmed && context.mounted) {
-                      final ok =
-                          await provider.deleteCustomer(customer.id!);
-                      if (context.mounted) {
-                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text(ok
-                              ? 'Customer deleted'
-                              : 'Failed to delete customer'),
-                        ));
-                      }
+                    final ok =
+                        await provider.deleteCustomer(customer.id!);
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(ok
+                            ? 'Customer deleted'
+                            : 'Failed to delete customer'),
+                      ));
                     }
                   },
                 );

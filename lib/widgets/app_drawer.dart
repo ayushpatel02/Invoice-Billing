@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/business_profile_provider.dart';
+import '../constants/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -15,13 +16,27 @@ class AppDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
-            decoration: const BoxDecoration(color: Color(0xFF1565C0)),
+            decoration: const BoxDecoration(
+              color: AppTheme.primary,
+              gradient: LinearGradient(
+                colors: [AppTheme.primary, Color(0xFFB71C1C)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                const Icon(Icons.receipt_long,
-                    color: Colors.white, size: 36),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withAlpha(40),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: const Icon(Icons.receipt_long,
+                      color: Colors.white, size: 36),
+                ),
                 const SizedBox(height: 8),
                 Text(
                   profile?.fullName ?? 'Invoice Billing',
