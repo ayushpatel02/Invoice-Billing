@@ -89,7 +89,13 @@ class CustomerCard extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    if (hasBalance)
+                    if (hasBalance) ...[
+                      Text('Invoice Due',
+                          style: TextStyle(
+                              fontSize: 10,
+                              color: Colors.grey[600],
+                              fontWeight: FontWeight.w500)),
+                      const SizedBox(height: 2),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
@@ -101,11 +107,11 @@ class CustomerCard extends StatelessWidget {
                           formatCurrency(customer.outstandingBalance),
                           style: const TextStyle(
                               color: AppTheme.error,
-                              fontSize: 12,
+                              fontSize: 13,
                               fontWeight: FontWeight.bold),
                         ),
-                      )
-                    else
+                      ),
+                    ] else
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8, vertical: 4),
@@ -113,9 +119,11 @@ class CustomerCard extends StatelessWidget {
                           color: AppTheme.success.withAlpha(25),
                           borderRadius: BorderRadius.circular(4),
                         ),
-                        child: const Text('Settled',
+                        child: const Text('All Settled',
                             style: TextStyle(
-                                color: AppTheme.success, fontSize: 12)),
+                                color: AppTheme.success,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600)),
                       ),
                     const SizedBox(height: 4),
                     IconButton(

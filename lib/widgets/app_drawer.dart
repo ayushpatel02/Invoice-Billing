@@ -28,14 +28,14 @@ class AppDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withAlpha(40),
-                    borderRadius: BorderRadius.circular(8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.asset(
+                    'assets/images/app_logo.png',
+                    width: 52,
+                    height: 52,
+                    fit: BoxFit.cover,
                   ),
-                  child: const Icon(Icons.receipt_long,
-                      color: Colors.white, size: 36),
                 ),
                 const SizedBox(height: 8),
                 Text(

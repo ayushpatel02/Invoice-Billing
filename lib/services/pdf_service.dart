@@ -11,6 +11,11 @@ import '../utils/currency_formatter.dart';
 import '../utils/date_formatter.dart';
 import '../utils/number_to_words.dart';
 
+// PDF-safe currency: ₹ symbol not reliably available in PDF fonts, use Rs.
+String _pdfCurrency(double amount) =>
+    formatCurrency(amount).replaceAll('₹', 'Rs.');
+String _pdfAmount(double amount) => formatAmount(amount);
+
 class PdfService {
   static Future<Uint8List> generateInvoicePdf({
     required BusinessProfile business,
@@ -50,8 +55,6 @@ class PdfService {
           _buildTotals(invoice),
           pw.SizedBox(height: 8),
           _buildAmountInWords(invoice.netPayable),
-          pw.SizedBox(height: 12),
-          _buildTerms(),
           pw.SizedBox(height: 24),
           _buildSignatures(),
         ],
@@ -161,8 +164,8 @@ class PdfService {
       if (hasW) row.add(item.w?.toString() ?? '');
       if (hasNos) row.add(item.nos?.toString() ?? '');
       row.add(item.qty.toString());
-      row.add(formatAmount(item.rate));
-      row.add(formatAmount(item.amount));
+      row.add(_pdfAmount(item.rate));
+      row.add(_pdfAmount(item.amount));
       return row;
     }).toList();
 
@@ -191,19 +194,19 @@ class PdfService {
         width: 220,
         child: pw.Column(
           children: [
-            _totalRow('Subtotal', formatCurrency(invoice.totalAmount)),
+            _totalRow('Subtotal', _pdfCurrency(invoice.totalAmount)),
             if (invoice.cgstRate > 0)
               _totalRow(
-                  'CGST (${invoice.cgstRate}%)', formatCurrency(invoice.cgstAmount)),
+                  'CGST (${invoice.cgstRate}%)', _pdfCurrency(invoice.cgstAmount)),
             if (invoice.sgstRate > 0)
               _totalRow(
-                  'SGST (${invoice.sgstRate}%)', formatCurrency(invoice.sgstAmount)),
+                  'SGST (${invoice.sgstRate}%)', _pdfCurrency(invoice.sgstAmount)),
             pw.Divider(thickness: 1),
-            _totalRow('Net Payable', formatCurrency(invoice.netPayable),
+            _totalRow('Net Payable', _pdfCurrency(invoice.netPayable),
                 bold: true),
             if (invoice.amountPaid > 0) ...[
-              _totalRow('Amount Paid', formatCurrency(invoice.amountPaid)),
-              _totalRow('Balance Due', formatCurrency(invoice.balance),
+              _totalRow('Amount Paid', _pdfCurrency(invoice.amountPaid)),
+              _totalRow('Balance Due', _pdfCurrency(invoice.balance),
                   bold: true, color: PdfColors.red800),
             ],
           ],
@@ -245,21 +248,6 @@ class PdfService {
           ),
         ],
       ),
-    );
-  }
-
-  static pw.Widget _buildTerms() {
-    return pw.Column(
-      crossAxisAlignment: pw.CrossAxisAlignment.start,
-      children: [
-        pw.Text('Terms & Conditions:',
-            style: pw.TextStyle(
-                fontSize: 9, fontWeight: pw.FontWeight.bold)),
-        pw.Text('1. Goods once sold will not be accepted.',
-            style: const pw.TextStyle(fontSize: 8)),
-        pw.Text('2. Payment due within 30 days.',
-            style: const pw.TextStyle(fontSize: 8)),
-      ],
     );
   }
 
